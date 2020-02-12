@@ -38,20 +38,29 @@ Often times you may want to pre-configure a request to be used with shared
 settings in different contexts. Additionally, you may want to build a
 web-service specific client.
 
-(These examples assume you have a `$container`)
-
 ### Setup the service
 
-```php
+Creating a service allows you to configure and share a PendingRequest object
+with as much boilerplate as necessary for your app to talk to a particular
+service. (`$container` is assumed to be some kind of service container.)
 
-$container->share('github-web-service', Phetch\Phetch::createService(function ($pendingRequestPrototype) {
+```php
+$githubWebService = Phetch\Phetch::createService(function ($pendingRequestPrototype) {
     $pendingRequestPrototype->withHeaders(['User-Agent' => 'My Applications Http Client v1.0.0'])
         ->withBaseUrl('https://api.github.com')
         ->withBearerAuth('abcdefghijklmnopqrstuvwxyz0123456789');
-}));
+});
+
+$container->share('github-web-service', $githubWebService);
 ```
 
 ### Use the service somewhere in your application code (controller, service classes, etc)
+
+The `PhetchService` now contains your prototypical `PendingRequest`
+object that is preconfigured for use everywhere in your application. Each time
+you call `$service->request()`, you will get a cloned/fresh `PendingRequest`
+object that you can interact with. State changes to this new object will
+not affect the service's pre-configured object:
 
 ```php
 /** @var \Phetch\PhetchService $github */
