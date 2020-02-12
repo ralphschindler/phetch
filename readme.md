@@ -23,8 +23,12 @@ $resp = Phetch\Phetch::withBearerAuth('abcdefghijklmnopqrstuvwxyz0123456789')
     ->get('https://api.github.com/repos/ralphschindler/phetch/issues', ['state' => 'all']);
 
 $resp->json(); // the response as an array
+```
 
-// simple call to a website with bad certificate
+Simple call to a website that has an un-verifyable certificate
+
+```php
+
 $page = Phetch\Phetch::withoutVerifying()->get('https://IDidntUpdateMyCert.org')->body();
 ```
 
@@ -36,15 +40,20 @@ web-service specific client.
 
 (These examples assume you have a `$container`)
 
+### Setup the service
+
 ```php
-// somewhere in the booting of your application
+
 $container->share('github-web-service', Phetch\Phetch::createService(function ($pendingRequestPrototype) {
     $pendingRequestPrototype->withHeaders(['User-Agent' => 'My Applications Http Client v1.0.0'])
         ->withBaseUrl('https://api.github.com')
         ->withBearerAuth('abcdefghijklmnopqrstuvwxyz0123456789');
 }));
+```
 
-// somewhere in your application code (controller, service classes, etc)
+### Use the service somewhere in your application code (controller, service classes, etc)
+
+```php
 /** @var \Phetch\PhetchService $github */
 $github = $container->get('github-web-service');
 
