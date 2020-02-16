@@ -1,8 +1,8 @@
 {
     "name": "ralphschindler/phetch",
-    "description": "TBD",
+    "description": "A Nice HTTP Client For PHP",
     "type": "library",
-    "license": "UNLICENSE",
+    "license": "MIT",
     "authors": [
         {
             "name": "Ralph Schindler",

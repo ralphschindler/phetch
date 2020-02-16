@@ -60,7 +60,7 @@ class PhpStreamAdapter
     {
         return array_column(array_map(function ($headerLine) {
             return preg_split('#:\s+#', $headerLine, 2);
-        }, $headerLines), nu, 0);
+        }, $headerLines), 1, 0);
     }
 }
 

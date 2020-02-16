@@ -9,6 +9,8 @@ use Phetch\Adapter\PhpStreamAdapter;
  */
 class PendingRequest
 {
+    use Concerns\HasHeaders;
+
     /** @var Adapter\PhpStreamAdapter|null  */
     protected $adapter = null;
 
@@ -187,18 +189,6 @@ class PendingRequest
                 $e // nest the actual adapter::send() exception
             );
         }
-    }
-
-    protected function normalizeHeaders(array $headers): array
-    {
-        return array_column(array_map(function ($name, $value) {
-            return [$this->normalizeHeaderName($name), $value];
-        }, array_keys($headers), $headers), 1, 0);
-    }
-
-    protected function normalizeHeaderName(string $name): string
-    {
-        return str_replace(' ', '-', ucwords(str_replace(['-', '_'], ' ', $name)));
     }
 
     protected function headersWithImplicitDefaultsForDataRequests(array $mergeHeaders = []): array

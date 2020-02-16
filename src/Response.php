@@ -7,6 +7,8 @@ namespace Phetch;
  */
 class Response
 {
+    use Concerns\HasHeaders;
+
     /** @var Request */
     protected $request;
     /** @var string */
@@ -16,7 +18,7 @@ class Response
     /** @var string */
     protected $body;
 
-    public function __construct(Request $request, $statusLine, $headers, $body)
+    public function __construct(Request $request, string $statusLine, array $headers, string $body)
     {
         $this->request = $request;
         $this->statusLine = $statusLine;
@@ -31,7 +33,8 @@ class Response
 
     public function isJson()
     {
-
+        return isset($this->headers['Content-Type'])
+            && preg_match('#^application\/[a-z0-9.+-]*json$#', $this->headers['Content-Type']);
     }
 
     public function header($name)

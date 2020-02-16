@@ -6,9 +6,9 @@ use Phetch\Response;
 
 class TestAdapter
 {
-    public $responseStatusLine;
-    public $responseHeaders;
-    public $responseBody;
+    public $responseStatusLine = '';
+    public $responseHeaders = [];
+    public $responseBody = '';
 
     public function send(Request $request, array $options): Response
     {
