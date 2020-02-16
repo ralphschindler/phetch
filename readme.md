@@ -53,22 +53,30 @@ $response = Phetch\Phetch::request()->delete('https://api.github.com/repos/ralph
 
 #### Other special helper methods
 
+##### Setting a base url for repeated calls at the same web service:
 ```php
-// Setting a base url for repeated calls at the same web service:
 $req = Phetch\Phetch::withBaseUrl('https://api.github.com');
 $respGet = $request->get(...);
 $respPatch = $request->patch(...);
+```
 
-// Without verifying the SSL Certificate
+##### Without verifying the SSL Certificate
+```php
 $page = Phetch\Phetch::withoutVerifying()->get('https://IDidntUpdateMyCert.org');
+```
 
-// Not following redirects
+##### Not following redirects
+```php
 $page = Phetch\Phetch::withoutRedirecting()->get('https://AUrlThatRedirects.com/place');
+```
 
-// Basic Authentication
+##### Basic Authentication
+```php
 $page = Phetch\Phetch::withBasicAuth($username, $password)->get('https://AUrlThatRedirects.com/place');
+```
 
-// Bearer authentication
+##### Bearer authentication
+```php
 $page = Phetch\Phetch::withBearerAuth($token)->get('https://AUrlThatRedirects.com/place');
 ```
 
