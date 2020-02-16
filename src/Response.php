@@ -2,6 +2,9 @@
 
 namespace Phetch;
 
+/**
+ * @property-read $headers
+ */
 class Response
 {
     /** @var Request */
@@ -44,6 +47,13 @@ class Response
     public function json()
     {
         return json_decode($this->body, true);
+    }
+
+    public function __get($name)
+    {
+        switch ($name) {
+            case 'headers': return $this->headers;
+        }
     }
 }
 

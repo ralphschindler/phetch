@@ -1,9 +1,14 @@
 # Phetch
 
-Phetch is the missing 80% use case HTTP client for PHP. The API is
-comfortable and pleasant to use. Phetch did not invent anything new,
-rather it is borrowing and building on other great projects to inform
-its feature set, specifically Zttp and Httpie.
+Phetch is the missing 80% use case HTTP client for PHP. Phetch did not invent anything new,
+rather it is borrowing and building these ideas & desires:
+
+- API is natural, comfortable, and pleasant to use
+- A Zttp like client without the Guzzle dependency
+- As approachable as HTTPie
+- Json by default / Sensible defaults
+- Has shallow stack traces
+- Service container friendly
 
 # Install
 
@@ -13,23 +18,53 @@ $ composer require ralphschindler/phetch
 
 # Usage
 
-## Standalone
-
-For one off usage, use the `Phetch\Phetch` utility class to get started:
+#### GET With Query Parameters
 
 ```php
 // simple call to the Github API
 $resp = Phetch\Phetch::withBearerAuth('abcdefghijklmnopqrstuvwxyz0123456789')
     ->get('https://api.github.com/repos/ralphschindler/phetch/issues', ['state' => 'all']);
 
-$resp->json(); // the response as an array
+$resp->json(); // the response body as an array
 ```
 
-Simple call to a website that has an un-verifyable certificate
+#### POST with body
+```php
+$response = Phetch\Phetch::request()->post('repos/ralphschindler/phetch/issues', [
+    'title' => 'My Issue',
+    'body' => 'This is the body to my issue',
+]);
+```
+
+#### PATCH
+```php
+$response = Phetch\Phetch::request()->patch('repos/ralphschindler/phetch/issues/1', [
+    'title' => 'My Issue Updated Title!',
+]);
+```
+
+#### DELETE, with special headers at call time
+```php
+// locking github issues requires a special accept header
+$response = Phetch\Phetch::request()->delete('repos/ralphschindler/phetch/issues/1/lock',
+    ['headers' => ['Accept' => 'application/vnd.github.sailor-v-preview+json']]
+);
+```
+
+#### Other special helper methods
 
 ```php
+// Without verifying the SSL Certificate
+$page = Phetch\Phetch::withoutVerifying()->get('https://IDidntUpdateMyCert.org');
 
-$page = Phetch\Phetch::withoutVerifying()->get('https://IDidntUpdateMyCert.org')->body();
+// Not following redirects
+$page = Phetch\Phetch::withoutRedirecting()->get('https://AUrlThatRedirects.com/place');
+
+// Basic Authentication
+$page = Phetch\Phetch::withBasicAuth($username, $password)->get('https://AUrlThatRedirects.com/place');
+
+// Bearer authentication
+$page = Phetch\Phetch::withBearerAuth($token)->get('https://AUrlThatRedirects.com/place');
 ```
 
 ## As A Service Inside An Application
@@ -40,7 +75,7 @@ web-service specific client.
 
 ### Setup the service
 
-Creating a service allows you to configure and share a PendingRequest object
+Creating a service allows you to configure and share a `PendingRequest` object
 with as much boilerplate as necessary for your app to talk to a particular
 service. (`$container` is assumed to be some kind of service container.)
 
@@ -74,5 +109,6 @@ $resp = $github->request()
 
 ## Todo
 
-
-- httpie parser
+- httpie command parsing
+- command line phetch client
+- curl adapter (good open source contribution would be nice!)

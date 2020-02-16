@@ -18,9 +18,19 @@ class Phetch
         return new PhetchService($pendingRequest);
     }
 
+    /*
     public static function httpie($command)
     {
+        // @todo
+    }
+    */
 
+    /**
+     * @return PendingRequest
+     */
+    public static function request()
+    {
+        return new PendingRequest;
     }
 
     /**
@@ -30,6 +40,6 @@ class Phetch
      */
     public static function __callStatic($method, $arguments)
     {
-        return (new PendingRequest())->{$method}(...$arguments);
+        return (new PendingRequest)->{$method}(...$arguments);
     }
 }

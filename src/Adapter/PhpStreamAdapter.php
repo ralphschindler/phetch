@@ -19,6 +19,10 @@ class PhpStreamAdapter
             ]
         ];
 
+        if ($body = $request->body()) {
+            $contextOptions['http']['content'] = $body;
+        }
+
         if (isset($options['verify']) && $options['verify'] === false) {
             $contextOptions['ssl']['verify_peer'] = false;
         }
@@ -54,14 +58,9 @@ class PhpStreamAdapter
 
     protected function headerLinesToAssocHeaders(array $headerLines)
     {
-        $headers = [];
-
-        foreach ($headerLines as $headerLine) {
-            list($key, $value) = explode(':', $headerLine, 2);
-            $headers[$key] = ltrim($value);
-        }
-
-        return $headers;
+        return array_column(array_map(function ($headerLine) {
+            return preg_split('#:\s+#', $headerLine, 2);
+        }, $headerLines), nu, 0);
     }
 }
 
