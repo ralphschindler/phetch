@@ -30,7 +30,7 @@ $resp->json(); // the response body as an array
 
 #### POST with body
 ```php
-$response = Phetch\Phetch::request()->post('repos/ralphschindler/phetch/issues', [
+$response = Phetch\Phetch::request()->post('https://api.github.com/repos/ralphschindler/phetch/issues', [
     'title' => 'My Issue',
     'body' => 'This is the body to my issue',
 ]);
@@ -38,7 +38,7 @@ $response = Phetch\Phetch::request()->post('repos/ralphschindler/phetch/issues',
 
 #### PATCH
 ```php
-$response = Phetch\Phetch::request()->patch('repos/ralphschindler/phetch/issues/1', [
+$response = Phetch\Phetch::request()->patch('https://api.github.com/repos/ralphschindler/phetch/issues/1', [
     'title' => 'My Issue Updated Title!',
 ]);
 ```
@@ -46,7 +46,7 @@ $response = Phetch\Phetch::request()->patch('repos/ralphschindler/phetch/issues/
 #### DELETE, with special headers at call time
 ```php
 // locking github issues requires a special accept header
-$response = Phetch\Phetch::request()->delete('repos/ralphschindler/phetch/issues/1/lock',
+$response = Phetch\Phetch::request()->delete('https://api.github.com/repos/ralphschindler/phetch/issues/1/lock',
     ['headers' => ['Accept' => 'application/vnd.github.sailor-v-preview+json']]
 );
 ```
@@ -54,6 +54,11 @@ $response = Phetch\Phetch::request()->delete('repos/ralphschindler/phetch/issues
 #### Other special helper methods
 
 ```php
+// Setting a base url for repeated calls at the same web service:
+$req = Phetch\Phetch::withBaseUrl('https://api.github.com');
+$respGet = $request->get(...);
+$respPatch = $request->patch(...);
+
 // Without verifying the SSL Certificate
 $page = Phetch\Phetch::withoutVerifying()->get('https://IDidntUpdateMyCert.org');
 
