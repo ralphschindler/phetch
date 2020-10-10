@@ -1,6 +1,7 @@
 {
     "name": "ralphschindler/phetch",
     "description": "A Nice HTTP Client For PHP",
+    "keywords": ["http", "http client", "rest", "rest client", "file_get_contents", "streams", "unguzzle"],
     "type": "library",
     "license": "MIT",
     "authors": [

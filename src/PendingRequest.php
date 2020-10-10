@@ -47,7 +47,7 @@ class PendingRequest
     }
 
     /** @todo should share this implementation with actual Request class */
-    public function header($name): string
+    public function header($name): ?string
     {
         return $this->headers[$this->normalizeHeaderName($name)] ?? null;
     }
