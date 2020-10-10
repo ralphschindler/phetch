@@ -7,6 +7,7 @@ rather it is borrowing and building these ideas & desires:
 - A Zttp like client without the Guzzle dependency
 - As approachable as HTTPie
 - Json by default / Sensible defaults
+- Lightweight wrapper of PHP stream (http, ssl) functionality
 - Has shallow stack traces
 - Service container friendly
 
